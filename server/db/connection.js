@@ -1,9 +1,7 @@
 const mongoose = require("mongoose");
 
 const mongoURI =
-  process.env.NODE_ENV === "production"
-    ? process.env.DB_URL
-    : "mongodb://localhost/wiretunz";
+  "mongodb+srv://mtaraq:mtaraq@cluster0.eqoyi.mongodb.net/project3?retryWrites=true&w=majority";
 
 mongoose
   .connect(mongoURI)
