@@ -1,5 +1,5 @@
 require("dotenv").config();
-const mongoose = require("../connection/connection");
+const mongoose = require("../db/connection");
 const jwt = require("jsonwebtoken");
 const Joi = require("joi");
 const passwordComplexity = require("joi-password-complexity");

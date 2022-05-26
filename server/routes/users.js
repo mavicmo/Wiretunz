@@ -74,15 +74,45 @@ router.post("/login", async (req, res) => {
       user.token = token;
 
       res.status(200).json(user);
+    } else {
+      res.status(400).send("Invalid Credentials");
     }
-    res.status(400).send("Invalid Credentials");
   } catch (error) {
     console.log(error);
   }
 });
 
 router.post("/homepage", auth, (req, res) => {
-  res.status(200).send("Welcome 🙌 ");
+  res.status(200).send(`Welcome`);
+});
+
+// get user data
+router.get("/:id", auth, async (req, res) => {
+  console.log("hit get by id");
+  try {
+    const user = await User.findById(req.params.id).select("-password -__v");
+    res.status(200).send({ data: user });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+//update user data
+router.put("/:id", auth, async (req, res) => {
+  console.log("hit update");
+  const user = await User.findByIdAndUpdate(
+    req.params.id,
+    { $set: req.body },
+    { new: true }
+  ).select("-password -__v");
+  res.status(200).send({ data: user, message: "User has been updated" });
+});
+
+// delete user by id
+router.delete("/:id", [auth], async (req, res) => {
+  console.log("hit delete");
+  await User.findByIdAndDelete(req.params.id);
+  res.status(200).send({ message: "User has been Deleted" });
 });
 
 module.exports = router;
