@@ -1,8 +1,7 @@
 //require everything
 const express = require("express");
 const cors = require("cors");
-const usersRoutes = require("./routes/users");
-const songsRoutes = require("./routes/songs");
+const usersRoute = require("./routes/users");
 const app = express();
 
 //Port to run backend server
@@ -12,8 +11,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/users/", usersRoutes);
-app.use("/songs/", songsRoutes);
+app.use("/", usersRoute);
 
 app.listen(port, () => {
   console.log("listening on port " + port);
