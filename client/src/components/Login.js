@@ -1,73 +1,94 @@
-import React, {useState} from 'react'
-import './App.css';
+import axios from "axios";
+import React, { useState } from "react";
 
 function Login() {
   const [values, setValues] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
+  const [submitted, setSubmitted] = useState(true);
+  const [valid, setValid] = useState(false);
+  const handleFirstNameInputChange = (event) => {
+    setValues({ ...values, firstName: event.target.value });
+  };
 
-      firstName: '',
-      lastName: '',
-      email: ''
-    });
-    const [submitted, setSubmitted] = useState(true);
-    const [valid, setValid] = useState(false);   
+  const handleLastNameInputChange = (event) => {
+    setValues({ ...values, lastName: event.target.value });
+  };
 
-  const handleFirstNameInputChange =(event) => {
-    setValues({...values, firstName: event.target.value})
-  }
-      
-  const handleLastNameInputChange =(event) => {
-    setValues({...values, lastName: event.target.value})    
-  }
-
-  const handleEmailInputChange =(event) => {
-    setValues({...values, email: event.target.value})
-  }
-  const handleSubmit = (event) => { 
-    event.preventDefault() 
-    if(values.firstName && values.lastName && values.email) {
+  const handleEmailInputChange = (event) => {
+    setValues({ ...values, email: event.target.value });
+  };
+  const handlePasswordInputChange = (event) => {
+    setValues({ ...values, password: event.target.value });
+  };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (
+      values.firstName &&
+      values.lastName &&
+      values.email &&
+      values.password
+    ) {
       setValid(true);
+      axios.post("http://localhost:3001/login", values).then(() => {
+        console.log("login");
+      });
     }
     setSubmitted(true);
-    
-  }
+  };
   return (
     <div className="form-container">
-      <form className='Sign-in-form' onSubmit={handleSubmit}></form>
-      <h1> WireTunz Sign In</h1>
+      <form className="Sign-in-form" onSubmit={handleSubmit}>
+        <h1> WireTunz Sign In</h1>
 
-      {submitted && valid ? <div className='Successful! Start Listening'></div> :null }
-
-
-
-      <form className="sign-in"></form>
-        <input
-        onChange={handleFirstNameInputChange}
-        value={values.firstName}
-        className= 'form-field'
-        placeholder='First Name'
-        name='firstName' />
-       {submitted && !values.firstName ? <span>Enter First Name</span> :null } 
+        {submitted && valid ? (
+          <div className="Successful! Start Listening"></div>
+        ) : null}
 
         <input
-        onChange={handleLastNameInputChange}
-        value={values.LastName}
-        className= 'form-field'
-        placeholder='Last Name'
-        name='LastName' />
-        {submitted && !values.LastName ? <span>Enter Last Name</span> :null}
+          onChange={handleFirstNameInputChange}
+          value={values.firstName}
+          className="form-field"
+          placeholder="First Name"
+          name="firstName"
+        />
+        {submitted && !values.firstName ? <span>Enter First Name</span> : null}
 
         <input
-        onChange={handleEmailInputChange}
-        value={values.email}
-        className= 'form-field'
-        placeholder='email'
-        name='email' />
-          {submitted && !values.email ?<span>Enter Email Name</span> :null}
-         <button
-         className='form-field'
-         type='submit'>Sign In</button>
-  </div>
-  )};
+          onChange={handleLastNameInputChange}
+          value={values.LastName}
+          className="form-field"
+          placeholder="Last Name"
+          name="LastName"
+        />
+        {submitted && !values.LastName ? <span>Enter Last Name</span> : null}
 
+        <input
+          onChange={handleEmailInputChange}
+          value={values.email}
+          className="form-field"
+          placeholder="email"
+          name="email"
+        />
+        {submitted && !values.email ? <span>Enter Email Name</span> : null}
+        <button className="form-field" type="submit">
+          Sign In
+        </button>
+
+        <input
+          onChange={handlePasswordInputChange}
+          value={values.password}
+          className="form-field"
+          placeholder="password"
+          name="password"
+        />
+        {submitted && !values.password ? <span>Enter Password</span> : null}
+      </form>
+    </div>
+  );
+}
 
 export default Login;
