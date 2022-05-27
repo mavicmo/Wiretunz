@@ -6,8 +6,6 @@ const Song = require("../model/Song");
 const validObjectID = require("../middleware/validObjectID");
 const auth = require("../middleware/auth");
 
-const bcrypt = require("bcrypt");
-
 // get all the songs
 router.get("/", async (req, res) => {
   const songs = await Song.find();
