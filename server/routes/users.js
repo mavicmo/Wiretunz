@@ -51,7 +51,7 @@ router.post("/signup", async (req, res) => {
 
 //login user
 router.post("/login", async (req, res) => {
-  console.log("hit");
+  console.log(req.body);
   try {
     //get user input
     const { email, password } = req.body;
