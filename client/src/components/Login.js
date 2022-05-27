@@ -1,12 +1,14 @@
+import axios from 'axios'
 import React, {useState} from 'react'
-import './App.css';
+
 
 function Login() {
   const [values, setValues] = useState({
 
       firstName: '',
       lastName: '',
-      email: ''
+      email: '',
+      password: ''
     });
     const [submitted, setSubmitted] = useState(true);
     const [valid, setValid] = useState(false);   
@@ -22,24 +24,31 @@ function Login() {
   const handleEmailInputChange =(event) => {
     setValues({...values, email: event.target.value})
   }
+    const handlePasswordInputChange =(event) => {
+      setValues({...values, password: event.target.value})
+  }
   const handleSubmit = (event) => { 
     event.preventDefault() 
-    if(values.firstName && values.lastName && values.email) {
-      setValid(true);
+    if(values.firstName && values.lastName && values.email && values.password) {
+      setValid(true); 
+    
+    
+      
+      axios.post('http://localhost:3001/login',values).then(() =>{console.log('login')})
     }
     setSubmitted(true);
     
   }
   return (
     <div className="form-container">
-      <form className='Sign-in-form' onSubmit={handleSubmit}></form>
+      <form className='Sign-in-form' onSubmit={handleSubmit}>
       <h1> WireTunz Sign In</h1>
 
       {submitted && valid ? <div className='Successful! Start Listening'></div> :null }
 
 
 
-      <form className="sign-in"></form>
+      
         <input
         onChange={handleFirstNameInputChange}
         value={values.firstName}
@@ -66,6 +75,15 @@ function Login() {
          <button
          className='form-field'
          type='submit'>Sign In</button>
+
+        <input
+        onChange={handlePasswordInputChange}
+        value={values.password}
+        className= 'form-field'
+        placeholder='password'
+        name='password' />
+        {submitted && !values.password ? <span>Enter Password</span> :null}
+        </form>
   </div>
   )};
 
