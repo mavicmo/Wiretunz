@@ -24,6 +24,12 @@ router.get("/", auth, async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
   }
 });
 

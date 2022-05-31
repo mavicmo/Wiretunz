@@ -35,6 +35,12 @@ router.post("/", auth, async (req, res) => {
     res.status(201).send({ data: playlist });
   } catch (error) {
     console.log(error);
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
   }
 });
 
@@ -71,6 +77,12 @@ router.put("/editplaylist/:id", auth, async (req, res) => {
     res.status(200).send({ message: "Playlist was Updated" });
   } catch (error) {
     console.log(error);
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
   }
 });
 
@@ -108,6 +120,12 @@ router.put("/addsong/", auth, async (req, res) => {
       .send({ data: playlist, message: "Song has been added to the playlist" });
   } catch (error) {
     console.log(error);
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
   }
 });
 
@@ -143,6 +161,12 @@ router.put("/removesong/", auth, async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
   }
 });
 
@@ -159,6 +183,12 @@ router.get("/:id", auth, async (req, res) => {
     res.status(200).send({ data: { playlist, songs } });
   } catch (error) {
     console.log(error);
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
   }
 });
 
@@ -169,11 +199,9 @@ router.delete("/:id", auth, async (req, res) => {
     const user = await User.findById(req.user._id);
     const playlist = await Playlist.findById(req.params.id);
     if (!user._id.equals(playlist.user))
-      return res
-        .status(403)
-        .send({
-          message: "You dont havess permission to delete this playlist",
-        });
+      return res.status(403).send({
+        message: "You dont havess permission to delete this playlist",
+      });
     //get index of the playlist in the users playlist array
     const index = user.playlists.indexOf(req.params.id);
     user.playlists.splice(index, 1);
@@ -182,6 +210,12 @@ router.delete("/:id", auth, async (req, res) => {
     res.status(200).send({ message: "Playlist was removed" });
   } catch (error) {
     console.log(error);
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
   }
 });
 module.exports = router;
