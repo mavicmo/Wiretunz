@@ -33,7 +33,7 @@ function Login() {
       values.password
     ) {
       setValid(true);
-      axios.post("http://localhost:3001/login", values).then(() => {
+      axios.post("http://localhost:3001/users/login", values).then(() => {
         console.log("login");
       });
     }
@@ -42,7 +42,7 @@ function Login() {
   return (
     <div className="form-container">
       <form className="Sign-in-form" onSubmit={handleSubmit}>
-        <h1> WireTunz Sign In</h1>
+        <h1> WireTunz Login</h1>
 
         {submitted && valid ? (
           <div className="Successful! Start Listening"></div>
@@ -59,12 +59,12 @@ function Login() {
 
         <input
           onChange={handleLastNameInputChange}
-          value={values.LastName}
+          value={values.lastName}
           className="form-field"
           placeholder="Last Name"
           name="LastName"
         />
-        {submitted && !values.LastName ? <span>Enter Last Name</span> : null}
+        {submitted && !values.lastName ? <span>Enter Last Name</span> : null}
 
         <input
           onChange={handleEmailInputChange}
