@@ -8,8 +8,17 @@ const auth = require("../middleware/auth");
 
 // get all the songs
 router.get("/", async (req, res) => {
-  const songs = await Song.find();
-  res.status(200).send({ data: songs });
+  try {
+    const songs = await Song.find();
+    res.status(200).send({ data: songs });
+  } catch (error) {
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
+  }
 });
 
 // create a new song
@@ -20,7 +29,7 @@ router.post("/", async (req, res) => {
 
     //validate empty string
     if (!(name && artist && song && img && duration)) {
-      res.status(400).send("Please enter all required fields");
+      throw "inputError";
     }
 
     const music = await Song.create({
@@ -40,6 +49,20 @@ router.post("/", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    //input error
+    if (error === "inputError") {
+      return res.status(400).json({
+        status: 400,
+        message: "Invalid Credentials",
+        requestAt: new Date().toLocaleString(),
+      });
+    }
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
   }
 });
 
@@ -52,6 +75,12 @@ router.put("/:id", async (req, res) => {
     res.send({ data: song, message: "Song has been Updated" });
   } catch (error) {
     console.log(error);
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
   }
 });
 
@@ -62,6 +91,12 @@ router.delete("/:id", async (req, res) => {
     res.status(200).send({ message: "Song has been deleted" });
   } catch (error) {
     console.log(error);
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
   }
 });
 
@@ -103,6 +138,12 @@ router.get("/likedsongs/", auth, async (req, res) => {
     res.status(200).send({ data: songs });
   } catch (error) {
     console.log(error);
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
   }
 });
 
