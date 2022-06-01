@@ -2,10 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import * as MdIcons from "react-icons/md";
 import * as FiIcons from "react-icons/fi";
+import NavBar from "../../components/NavBar/Navbar";
 
 function Home(props) {
   return (
     <>
+      <NavBar />
       <main className="main-content">
         <div className="search">
           <input type="text" placeholder="Search Song" id="search" />
@@ -23,13 +25,7 @@ function Home(props) {
           </Link>
         </div>
 
-
-        <div className="search-result">
-            
-        </div>
-
-
-
+        <div className="search-result"></div>
       </main>
     </>
   );

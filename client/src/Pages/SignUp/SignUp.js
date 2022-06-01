@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import "./signup.css";
 import FormInput from "../FormInputs/FormInputs";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   // useState for the values
@@ -12,7 +13,7 @@ const SignUp = () => {
     password: "",
   });
   // useState for the submit Button
-  const [submitted, setSubmitted] = useState(true);
+  const [submitted, setSubmitted] = useState(false);
 
   // static setting for the input values
   const inputs = [
@@ -76,9 +77,9 @@ const SignUp = () => {
       // connects to the backend server to set the values
       axios.post("http://localhost:3001/users/signup/", values).then(() => {
         console.log("User has been signed up.");
+        setSubmitted(true);
       });
     }
-    setSubmitted(true);
   };
 
   // setting the values
@@ -98,7 +99,22 @@ const SignUp = () => {
             onChange={onChange}
           />
         ))}
-        <button>Sign Up</button>
+        {/* <button>Sign Up!</button> */}
+        {submitted ? (
+          <Link to="/">
+            <button>Sign Up!</button>
+          </Link>
+        ) : (
+          <button>Sign Up!</button>
+        )}
+
+        <p className="no-account">
+          Already have an account?{" "}
+          <Link style={{ marginLeft: ".2rem" }} to="/">
+            {" "}
+            LOGIN!
+          </Link>
+        </p>
       </form>
     </div>
   );
