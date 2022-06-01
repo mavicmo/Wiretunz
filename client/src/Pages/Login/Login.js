@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "../SignUp/signup.css";
@@ -12,7 +13,7 @@ const SignUp = () => {
   });
 
   // useState for the submit Button
-  const [submitted, setSubmitted] = useState(true);
+  const [submitted, setSubmitted] = useState(false);
 
   // static setting for the input values
   const inputs = [
@@ -73,9 +74,21 @@ const SignUp = () => {
             onChange={onChange}
           />
         ))}
-        <button>Log In</button>
+
+        {submitted ? (
+          <Link to="/home">
+            <button>Log In</button>
+          </Link>
+        ) : (
+          <button>Log In</button>
+        )}
+
         <p className="no-account">
-          Don't have an account? <Link to="/signup">Sign Up!</Link>
+          Don't have an account?{" "}
+          <Link style={{ marginLeft: ".2rem" }} to="/signup">
+            {" "}
+            SIGN UP!
+          </Link>
         </p>
       </form>
     </div>
