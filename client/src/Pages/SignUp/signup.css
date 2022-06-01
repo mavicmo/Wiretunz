@@ -7,7 +7,7 @@
 }
 
 form {
-  background-color: white;
+  background-color: #ff871f;
   padding: 0px 60px;
   border-radius: 10px;
 }
@@ -23,11 +23,15 @@ button {
   padding: 10px;
   border: none;
   background-color: black;
-  color: white;
+  color: #ff871f;
   border-radius: 5px;
   font-weight: bold;
   font-size: 18px;
   cursor: pointer;
   margin-top: 15px;
   margin-bottom: 30px;
+}
+
+.no-account {
+  color: white;
 }

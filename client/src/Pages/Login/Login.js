@@ -1,16 +1,16 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
-import "./signup.css";
+import "../SignUp/signup.css";
 import FormInput from "../FormInputs/FormInputs";
 
 const SignUp = () => {
   // useState for the values
   const [values, setValues] = useState({
-    firstName: "",
-    lastName: "",
     email: "",
     password: "",
   });
+
   // useState for the submit Button
   const [submitted, setSubmitted] = useState(true);
 
@@ -18,28 +18,6 @@ const SignUp = () => {
   const inputs = [
     {
       id: 1,
-      name: "firstName",
-      type: "text",
-      placeholder: "First Name",
-      errorMessage:
-        "First Name should be 3-16 characters and shouldn't include any special character!",
-      label: "First Name",
-      pattern: "^[A-Za-z0-9]{3,16}$",
-      required: true,
-    },
-    {
-      id: 2,
-      name: "lastName",
-      type: "text",
-      placeholder: "Last Name",
-      errorMessage:
-        "Last Name should be 3-16 characters and shouldn't include any special character!",
-      label: "Last Name",
-      pattern: "^[A-Za-z0-9]{3,16}$",
-      required: true,
-    },
-    {
-      id: 3,
       name: "email",
       type: "email",
       placeholder: "Email",
@@ -49,7 +27,7 @@ const SignUp = () => {
     },
 
     {
-      id: 4,
+      id: 2,
       name: "password",
       type: "password",
       placeholder: "Password",
@@ -64,21 +42,18 @@ const SignUp = () => {
   // handles the submit button for a sign up
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (
-      values.firstName &&
-      values.lastName &&
-      values.email &&
-      values.password
-    ) {
-      // setValid(true);
-
-      // connects to the backend server to set the values
-      axios.post("http://localhost:3001/users/signup/", values).then(() => {
-        console.log("User has been signed up.");
-      });
+    console.log(values);
+    try {
+      if (values.email && values.password) {
+        // connects to the backend server to set the values
+        axios.post("http://localhost:3001/users/login/", values).then(() => {
+          console.log("User has logged in!");
+        });
+      }
+      setSubmitted(true);
+    } catch (error) {
+      console.log(error);
     }
-    setSubmitted(true);
   };
 
   // setting the values
@@ -89,7 +64,7 @@ const SignUp = () => {
   return (
     <div className="app">
       <form onSubmit={handleSubmit}>
-        <h1>Sign Up</h1>
+        <h1>Log In</h1>
         {inputs.map((input) => (
           <FormInput
             key={input.id}
@@ -98,7 +73,10 @@ const SignUp = () => {
             onChange={onChange}
           />
         ))}
-        <button>Sign Up</button>
+        <button>Log In</button>
+        <p className="no-account">
+          Don't have an account? <Link to="/signup">Sign Up!</Link>
+        </p>
       </form>
     </div>
   );
