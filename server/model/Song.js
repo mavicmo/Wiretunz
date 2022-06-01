@@ -1,4 +1,4 @@
-const mongoose = require("../connection/connection");
+const mongoose = require("../db/connection");
 
 const SongSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -8,6 +8,6 @@ const SongSchema = new mongoose.Schema({
   duration: { type: String, required: true },
 });
 
-const Song = mongoose.model(SongSchema);
+const Song = mongoose.model("Song", SongSchema);
 
 module.exports = Song;
