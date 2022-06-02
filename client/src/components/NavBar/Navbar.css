@@ -51,7 +51,8 @@
 }
 
 .nav-text a:hover {
-  background-color: #4ec3e0;
+  background-color: gray;
+  opacity: 5%;
 }
 
 .nav-menu-items {
@@ -69,6 +70,7 @@
 
 span {
   margin-left: 16px;
+  color: #fff;
 }
 
 .brand {

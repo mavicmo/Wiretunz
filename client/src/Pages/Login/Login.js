@@ -73,7 +73,12 @@ const SignUp = () => {
             onChange={onChange}
           />
         ))}
-        <button>Log In</button>
+        
+        <button>
+          {submitted ? <Link to="/home"> </Link> : null}
+          Log In
+        </button>
+
         <p className="no-account">
           Don't have an account? <Link to="/signup">Sign Up!</Link>
         </p>
