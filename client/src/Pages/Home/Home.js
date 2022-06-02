@@ -3,9 +3,12 @@ import { Link } from "react-router-dom";
 import * as MdIcons from "react-icons/md";
 import * as FiIcons from "react-icons/fi";
 import NavBar from "../../components/NavBar/Navbar";
+
 // import "./Home.css";
 
-function Home(props) {
+
+function Home({ data }) {
+  console.log(data);
   return (
     <>
       <NavBar />
