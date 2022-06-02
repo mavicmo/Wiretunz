@@ -1,17 +1,32 @@
 import { useState } from "react";
-
-import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../SignUp/signup.css";
 import FormInput from "../FormInputs/FormInputs";
+import React from "react";
+import AuthService from "../../services/authServices";
 
-const SignUp = () => {
+// import SignUp from "../SignUp/SignUp";
+// import Home from "../Home/Home";
+// import Profile from "../Profile/Profile";
+// import { Routes, Route } from "react-router-dom";
+
+const Login = () => {
   // useState for the values
   const [values, setValues] = useState({
     email: "",
     password: "",
   });
+  const [data, setData] = useState();
 
+  const navigate = useNavigate();
+
+  const clickRoute = (e) => {
+    navigate("/home");
+  };
+  // const location = useLocation();
+  // const { fromData } = location.state;
   // useState for the submit Button
   const [submitted, setSubmitted] = useState(false);
 
@@ -43,14 +58,21 @@ const SignUp = () => {
   // handles the submit button for a sign up
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(values);
+
     try {
       if (values.email && values.password) {
-        // connects to the backend server to set the values
-        axios.post("http://localhost:3001/users/login/", values).then(() => {
-          console.log("User has logged in!");
+        // // connects to the backend server to set the values
+        // axios.post("http://localhost:3001/users/login/", values).then((res) => {
+        //   console.log("User has logged in!");
+        //   console.log(res.data);
+        //   setData(res.data);
+        //   localStorage.setItem("uid", JSON.stringify(res.data));
+        AuthService.login(values.email, values.password).then(() => {
+          navigate("/home");
+          window.location.reload();
         });
       }
+
       setSubmitted(true);
     } catch (error) {
       console.log(error);
@@ -62,6 +84,7 @@ const SignUp = () => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
+  // console.log(data);
   return (
     <div className="app">
       <form onSubmit={handleSubmit}>
@@ -75,13 +98,7 @@ const SignUp = () => {
           />
         ))}
 
-        {submitted ? (
-          <Link to="/home">
-            <button>Log In</button>
-          </Link>
-        ) : (
-          <button>Log In</button>
-        )}
+        <button type="submit">Log In</button>
 
         <p className="no-account">
           Don't have an account?{" "}
@@ -95,4 +112,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default Login;
