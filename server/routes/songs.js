@@ -25,20 +25,18 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     // user input for the songs
-    const { name, artist, genere, song, img, duration } = req.body;
+    const { name, artist, song, img } = req.body;
 
     //validate empty string
-    if (!(name && artist && song && img && duration)) {
+    if (!(name && artist && song && img)) {
       throw "inputError";
     }
 
     const music = await Song.create({
       name,
       artist,
-      genere,
       song,
       img,
-      duration,
     });
     //send message user was created
     return res.status(201).json({

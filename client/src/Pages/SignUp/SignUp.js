@@ -1,9 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 import "./signup.css";
-import FormInput from "../FormInputs/FormInputs";
+import FormInput from "../../components/FormInputs/FormInputs";
 import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 const SignUp = () => {
   // useState for the values
   const [values, setValues] = useState({
@@ -14,7 +14,7 @@ const SignUp = () => {
   });
   // useState for the submit Button
   const [submitted, setSubmitted] = useState(false);
-
+  const navigate = useNavigate();
   // static setting for the input values
   const inputs = [
     {
@@ -75,10 +75,18 @@ const SignUp = () => {
       // setValid(true);
 
       // connects to the backend server to set the values
-      axios.post("http://localhost:3001/users/signup/", values).then(() => {
-        console.log("User has been signed up.");
-        setSubmitted(true);
-      });
+      axios
+        .post("http://localhost:3001/users/signup/", values)
+        .then(() => {
+          console.log("User has been signed up.");
+          setSubmitted(true);
+        })
+        .then(() => {
+          navigate("/");
+          window.location.reload();
+
+          setSubmitted(true);
+        });
     }
   };
 

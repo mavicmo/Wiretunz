@@ -11,9 +11,14 @@ const FormInput = (props) => {
 
   return (
     <div className="formInput">
-      <label>{label}</label>
-      <input {...inputProps} onChange={onChange} onBlur={handleFocus} />
-      <span>{errorMessage}</span>
+      <label className="labelDiv">{label}</label>
+      <input
+        className="inputDiv"
+        {...inputProps}
+        onChange={onChange}
+        onBlur={handleFocus}
+      />
+      <span className="errorSpan">{errorMessage}</span>
     </div>
   );
 };
