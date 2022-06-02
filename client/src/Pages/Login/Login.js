@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../SignUp/signup.css";
-import FormInput from "../FormInputs/FormInputs";
+import FormInput from "../../components/FormInputs/FormInputs";
 import React from "react";
 import AuthService from "../../services/authServices";
 
@@ -22,9 +22,6 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const clickRoute = (e) => {
-    navigate("/home");
-  };
   // const location = useLocation();
   // const { fromData } = location.state;
   // useState for the submit Button
@@ -86,9 +83,9 @@ const Login = () => {
 
   // console.log(data);
   return (
-    <div className="app">
-      <form onSubmit={handleSubmit}>
-        <h1>Log In</h1>
+    <div className="mainDiv">
+      <form className="formDiv" onSubmit={handleSubmit}>
+        <h1 className="h1Div">Log In</h1>
         {inputs.map((input) => (
           <FormInput
             key={input.id}
@@ -98,8 +95,9 @@ const Login = () => {
           />
         ))}
 
-
-        <button type="submit">Log In</button>
+        <button type="submit" className="btnDiv">
+          Log In
+        </button>
 
         <p className="no-account">
           Don't have an account?{" "}
