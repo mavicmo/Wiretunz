@@ -2,16 +2,14 @@ import React from "react";
 import axios from "axios";
 import AuthService from "../../services/authServices";
 import NavBar from "../../components/NavBar/Navbar";
-import FormInput from "../FormInputs/FormInputs";
+import FormInput from "../../components/FormInputs/FormInputs";
 import authHeader from "../../services/authHeader";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./profile.css";
 
 function Profile() {
-  const currentUser = AuthService.getCurrentUser();
-  console.log(currentUser);
-  console.log(authHeader);
-
+  let currentUser = AuthService.getCurrentUser();
   // useState for the values
   const [values, setValues] = useState({
     firstName: currentUser.firstName,
@@ -19,10 +17,12 @@ function Profile() {
     email: currentUser.email,
     password: currentUser.password,
   });
+
+  useEffect(() => {}, [currentUser]);
   // useState for the submit Button
   const [submitted, setSubmitted] = useState(false);
   const [edit, setEdit] = useState(false);
-
+  const navigate = useNavigate();
   // static setting for the input values
   const inputs = [
     {
@@ -57,7 +57,12 @@ function Profile() {
   // handles the submit button for a sign up
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(values);
 
+    changeUserProfile();
+  };
+
+  const changeUserProfile = async () => {
     if (values.firstName && values.lastName) {
       // setValid(true);
       console.log(currentUser);
@@ -67,8 +72,15 @@ function Profile() {
           headers: { "x-access-token": currentUser.token },
           values: values,
         })
+        .then((response) => {
+          console.log(response.data.data.email);
+          localStorage.setItem("user", JSON.stringify(response.data.data));
+          currentUser = AuthService.getCurrentUser();
+        })
         .then(() => {
-          console.log("User has been edited");
+          navigate("/profile");
+          window.location.reload();
+
           setSubmitted(true);
         });
     }
@@ -78,12 +90,10 @@ function Profile() {
   return (
     <>
       <NavBar />
-      <div className="user-name">
-        <p></p>
-      </div>
+
       <div>
-        <form onSubmit={handleSubmit}>
-          <h1>
+        <form className="formDiv" onSubmit={handleSubmit}>
+          <h1 className="h1Div">
             {" "}
             Hello{" "}
             {currentUser.firstName.charAt(0).toUpperCase() +
@@ -119,11 +129,17 @@ function Profile() {
           )}
           {edit ? (
             <div className="btn">
-              <button>Submit Changes</button>
-              <button onClick={() => setEdit(false)}>Cancel</button>
+              <button className="btnDiv">Submit Changes</button>
+              <button onClick={() => setEdit(false)} className="btnDiv">
+                Cancel
+              </button>
             </div>
           ) : (
-            <button type="submit" onClick={() => setEdit(true)}>
+            <button
+              type="submit"
+              onClick={() => setEdit(true)}
+              className="btnDiv"
+            >
               Edit
             </button>
           )}
