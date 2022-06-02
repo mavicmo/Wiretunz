@@ -8,7 +8,7 @@ const searchRoute = require("./routes/searchs");
 const app = express();
 
 //Port to run backend server
-const port = 3001 || process.env.PORT;
+// const port = 3001 || process.env.PORT;
 
 app.use(cors());
 app.use(express.json());
@@ -19,6 +19,8 @@ app.use("/songs/", songsRoute);
 app.use("/playlist/", playlistsRoute);
 app.use("/", searchRoute);
 
-app.listen(port, () => {
-  console.log("listening on port " + port);
+app.set("port", process.env.PORT || 3001);
+
+app.listen(app.get("port"), () => {
+  console.log(`✅ PORT: ${app.get("port")} 🌟`);
 });
