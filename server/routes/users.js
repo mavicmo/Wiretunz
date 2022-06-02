@@ -145,7 +145,7 @@ router.put("/:id", auth, async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(
       req.params.id,
-      { $set: req.body },
+      { $set: req.body.values },
       { new: true }
     ).select("-password -__v");
     res.status(200).send({ data: user, message: "User has been updated" });
