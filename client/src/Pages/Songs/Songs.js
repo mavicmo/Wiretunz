@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import './Songs.css'
+import axios from 'axios';
+import authHeader from "../../services/authHeader";
 
 function Songs() {
 
@@ -22,14 +25,14 @@ function Songs() {
         .then(result => setSong(result))
     }
 
-    const createSong = async (person) => {
+    const createSong = async (song) => {
         // make post request to create SONG
         await fetch(URL, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(person)
+            body: JSON.stringify(song)
         })
         // I also want to update it here
         getSong();
