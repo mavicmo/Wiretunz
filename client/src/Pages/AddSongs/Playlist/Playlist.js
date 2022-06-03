@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import "./Playlist.css";
 import axios from "axios";
-import authHeader from "../../services/authHeader";
-import Playlist from "../../../../../server/model/Playlist";
+import NavBar from "../../components/NavBar/Navbar";
 
 
 
