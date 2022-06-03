@@ -6,32 +6,37 @@ const Song = require("../model/Song");
 const validObjectID = require("../middleware/validObjectID");
 const auth = require("../middleware/auth");
 
-const bcrypt = require("bcrypt");
-
 // get all the songs
 router.get("/", async (req, res) => {
-  const songs = await Song.find();
-  res.status(200).send({ data: songs });
+  try {
+    const songs = await Song.find();
+    res.status(200).send({ data: songs });
+  } catch (error) {
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
+  }
 });
 
 // create a new song
 router.post("/", async (req, res) => {
   try {
     // user input for the songs
-    const { name, artist, genere, song, img, duration } = req.body;
+    const { name, artist, song, img } = req.body;
 
     //validate empty string
-    if (!(name && artist && song && img && duration)) {
-      res.status(400).send("Please enter all required fields");
+    if (!(name && artist && song && img)) {
+      throw "inputError";
     }
 
     const music = await Song.create({
       name,
       artist,
-      genere,
       song,
       img,
-      duration,
     });
     //send message user was created
     return res.status(201).json({
@@ -42,6 +47,20 @@ router.post("/", async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    //input error
+    if (error === "inputError") {
+      return res.status(400).json({
+        status: 400,
+        message: "Invalid Credentials",
+        requestAt: new Date().toLocaleString(),
+      });
+    }
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
   }
 });
 
@@ -54,6 +73,12 @@ router.put("/:id", async (req, res) => {
     res.send({ data: song, message: "Song has been Updated" });
   } catch (error) {
     console.log(error);
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
   }
 });
 
@@ -64,6 +89,12 @@ router.delete("/:id", async (req, res) => {
     res.status(200).send({ message: "Song has been deleted" });
   } catch (error) {
     console.log(error);
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
   }
 });
 
@@ -105,6 +136,12 @@ router.get("/likedsongs/", auth, async (req, res) => {
     res.status(200).send({ data: songs });
   } catch (error) {
     console.log(error);
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
   }
 });
 

@@ -8,21 +8,19 @@ const bcrypt = require("bcrypt");
 
 //signup user route
 router.post("/signup", async (req, res) => {
-  console.log("hit");
   try {
-    console.log("hit");
-    // user input for user fields
+    // user input and convert to lowercase
     const { firstName, lastName, email, password } = req.body;
 
     // validate user has entered something
     if (!(firstName && lastName && email && password)) {
-      res.status(400).send("Please enter all required fields");
+      throw "inputError";
     }
 
     //validate if existing user
     const userExists = await User.findOne({ email: req.body.email });
     if (userExists) {
-      res.status(400).send("User Already Exist. Try Logging In!");
+      throw "userexists";
     }
 
     //encrypt the input password
@@ -46,19 +44,42 @@ router.post("/signup", async (req, res) => {
   } catch (error) {
     //error
     console.log(error);
+
+    //user already exists error
+    if (error === "userexists") {
+      return res.status(409).json({
+        status: 409,
+        message: error,
+        requestAt: new Date().toLocaleString(),
+      });
+    }
+
+    //input error
+    if (error === "inputError") {
+      return res.status(400).json({
+        status: 400,
+        message: "Please enter all required fields",
+        requestAt: new Date().toLocaleString(),
+      });
+    }
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
   }
 });
 
 //login user
 router.post("/login", async (req, res) => {
-  console.log("hit");
   try {
     //get user input
     const { email, password } = req.body;
 
     //validate user input
     if (!(email && password)) {
-      res.status(400).send("Please enter all required fields");
+      throw "inputError";
     }
 
     const user = await User.findOne({ email });
@@ -79,6 +100,21 @@ router.post("/login", async (req, res) => {
     }
   } catch (error) {
     console.log(error);
+
+    //input error
+    if (error === "inputError") {
+      return res.status(400).json({
+        status: 400,
+        message: "Invalid Credentials",
+        requestAt: new Date().toLocaleString(),
+      });
+    }
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
   }
 });
 
@@ -94,25 +130,50 @@ router.get("/:id", auth, async (req, res) => {
     res.status(200).send({ data: user });
   } catch (error) {
     console.log(error);
+
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
   }
 });
 
 //update user data
 router.put("/:id", auth, async (req, res) => {
-  console.log("hit update");
-  const user = await User.findByIdAndUpdate(
-    req.params.id,
-    { $set: req.body },
-    { new: true }
-  ).select("-password -__v");
-  res.status(200).send({ data: user, message: "User has been updated" });
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body.values },
+      { new: true }
+    ).select("-password -__v");
+    res.status(200).send({ data: user, message: "User has been updated" });
+  } catch (error) {
+    console.log(error);
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
+  }
 });
 
 // delete user by id
 router.delete("/:id", [auth], async (req, res) => {
-  console.log("hit delete");
-  await User.findByIdAndDelete(req.params.id);
-  res.status(200).send({ message: "User has been Deleted" });
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.status(200).send({ message: "User has been Deleted" });
+  } catch (error) {
+    console.log(error);
+    // all other errors
+    return res.status(500).json({
+      status: 500,
+      message: "Server error",
+      requestAt: new Date().toLocaleString(),
+    });
+  }
 });
 
 module.exports = router;

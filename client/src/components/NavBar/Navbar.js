@@ -17,7 +17,7 @@ const Navbar = () => {
   const SideBarInfo = [
     {
       title: "Home",
-      path: "/",
+      path: "/home",
       icon: <AiIcons.AiFillHome />,
       cName: "nav-text",
     },
@@ -28,8 +28,8 @@ const Navbar = () => {
       cName: "nav-text",
     },
     {
-      title: "Songs",
-      path: "/songs",
+      title: "Liked Songs",
+      path: "/likedsongs",
       icon: <FiIcons.FiMusic />,
       cName: "nav-text",
     },
