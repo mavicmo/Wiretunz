@@ -12,14 +12,16 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
+
+app.get("/favicon.ico", (req, res) => {
+  console.log("test123");
+});
 
 app.use("/users/", usersRoute);
 app.use("/songs/", songsRoute);
 app.use("/playlist/", playlistsRoute);
 app.use("/", searchRoute);
-
-app.get('/favicon.ico', (req, res) => {res.send("dummy")})
 
 app.set("port", process.env.PORT || 3001);
 
