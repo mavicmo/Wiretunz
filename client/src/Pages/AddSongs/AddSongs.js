@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Songs.css";
+import "./AddSongs.css";
 import axios from "axios";
 import NavBar from "../../components/NavBar/Navbar";
 
